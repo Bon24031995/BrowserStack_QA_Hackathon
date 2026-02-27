@@ -1,0 +1,1685 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BrowserStack Accessibility Audit | ecommercebs.vercel.app | The Inclusive Engineer</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        :root {
+            --bg: #0f1117;
+            --surface: #1a1d2e;
+            --s2: #20243a;
+            --border: #2a2f52;
+            --text: #e8eaf6;
+            --muted: #7b82b0;
+            --red: #ff4d4d;
+            --red-bg: rgba(255, 77, 77, .12);
+            --red-b: rgba(255, 77, 77, .3);
+            --orange: #ff8c42;
+            --orange-bg: rgba(255, 140, 66, .12);
+            --orange-b: rgba(255, 140, 66, .3);
+            --yellow: #ffd166;
+            --yellow-bg: rgba(255, 209, 102, .12);
+            --yellow-b: rgba(255, 209, 102, .3);
+            --green: #06d6a0;
+            --green-bg: rgba(6, 214, 160, .12);
+            --green-b: rgba(6, 214, 160, .3);
+            --blue: #4c9be8;
+            --blue-bg: rgba(76, 155, 232, .12);
+            --blue-b: rgba(76, 155, 232, .3);
+            --accent: #5b6af5;
+            --font: 'Inter', system-ui, sans-serif;
+            --mono: 'JetBrains Mono', monospace;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--font);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* ── Topbar ── */
+        .topbar {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: .7rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .tl {
+            display: flex;
+            align-items: center;
+            gap: .9rem
+        }
+
+        .bs {
+            background: #e8440a;
+            color: #fff;
+            font-weight: 700;
+            font-size: .68rem;
+            letter-spacing: .04em;
+            padding: .22rem .55rem;
+            border-radius: 4px
+        }
+
+        .ttl {
+            font-weight: 600;
+            font-size: .83rem
+        }
+
+        .tsub {
+            font-size: .7rem;
+            color: var(--muted)
+        }
+
+        .live {
+            display: flex;
+            align-items: center;
+            gap: .45rem;
+            background: var(--green-bg);
+            border: 1px solid var(--green-b);
+            color: var(--green);
+            padding: .28rem .75rem;
+            border-radius: 20px;
+            font-size: .7rem;
+            font-weight: 600
+        }
+
+        .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--green);
+            box-shadow: 0 0 6px var(--green);
+            animation: p 2s infinite
+        }
+
+        @keyframes p {
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: .35
+            }
+        }
+
+        /* ── Hero ── */
+        .hero {
+            background: linear-gradient(135deg, #0c0f1a, #1a1d2e 60%, #1e2245);
+            border-bottom: 1px solid var(--border);
+            padding: 2.8rem 2rem 2rem;
+            position: relative;
+            overflow: hidden
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -40%;
+            right: -8%;
+            width: 480px;
+            height: 480px;
+            background: radial-gradient(circle, rgba(91, 106, 245, .14) 0%, transparent 70%);
+            pointer-events: none
+        }
+
+        .hi {
+            max-width: 1080px;
+            margin: 0 auto;
+            position: relative
+        }
+
+        .htag {
+            display: inline-flex;
+            align-items: center;
+            gap: .45rem;
+            background: rgba(91, 106, 245, .14);
+            border: 1px solid rgba(91, 106, 245, .3);
+            color: #8b9cf8;
+            font-size: .68rem;
+            font-weight: 600;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            padding: .28rem .75rem;
+            border-radius: 20px;
+            margin-bottom: 1.1rem
+        }
+
+        .hero h1 {
+            font-size: clamp(1.5rem, 3.5vw, 2.6rem);
+            font-weight: 700;
+            line-height: 1.15;
+            margin-bottom: .4rem
+        }
+
+        .hero h1 .url {
+            color: var(--accent)
+        }
+
+        .hdesc {
+            color: var(--muted);
+            font-size: .88rem;
+            margin-bottom: 1.8rem;
+            max-width: 580px
+        }
+
+        .hmeta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.4rem
+        }
+
+        .mc {
+            display: flex;
+            align-items: center;
+            gap: .35rem;
+            font-size: .73rem
+        }
+
+        .mc .l {
+            color: var(--muted)
+        }
+
+        .mc .v {
+            color: var(--text);
+            font-weight: 600
+        }
+
+        /* ── Submission proof box ── */
+        .proof-box {
+            background: linear-gradient(135deg, rgba(6, 214, 160, .07), rgba(91, 106, 245, .09));
+            border: 2px solid rgba(6, 214, 160, .35);
+            border-radius: 12px;
+            padding: 1.4rem 1.6rem;
+            margin-bottom: 1.75rem
+        }
+
+        .proof-title {
+            font-size: .65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .12em;
+            color: var(--green);
+            margin-bottom: .6rem
+        }
+
+        .proof-links {
+            display: flex;
+            flex-direction: column;
+            gap: .5rem
+        }
+
+        .proof-link-row {
+            display: flex;
+            align-items: center;
+            gap: .75rem;
+            flex-wrap: wrap
+        }
+
+        .proof-label {
+            font-size: .7rem;
+            color: var(--muted);
+            white-space: nowrap;
+            min-width: 90px
+        }
+
+        .proof-url {
+            font-family: var(--mono);
+            font-size: .72rem;
+            color: var(--text);
+            word-break: break-all;
+            flex: 1
+        }
+
+        .btn-proof {
+            display: inline-flex;
+            align-items: center;
+            gap: .35rem;
+            background: var(--green);
+            color: #000;
+            font-weight: 700;
+            font-size: .75rem;
+            padding: .45rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            white-space: nowrap;
+            flex-shrink: 0
+        }
+
+        .btn-proof:hover {
+            opacity: .85
+        }
+
+        .btn-secondary {
+            background: var(--blue-bg);
+            color: var(--blue);
+            border: 1px solid var(--blue-b);
+            font-weight: 600;
+            font-size: .75rem;
+            padding: .45rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            white-space: nowrap;
+            flex-shrink: 0
+        }
+
+        .btn-secondary:hover {
+            background: var(--blue);
+            color: #fff
+        }
+
+        .divider {
+            border: none;
+            border-top: 1px solid rgba(6, 214, 160, .2);
+            margin: .5rem 0
+        }
+
+        /* ── Main ── */
+        .main {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 2rem
+        }
+
+        /* ── Score ── */
+        .score-row {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            align-items: start
+        }
+
+        .score-dial {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 1.5rem 2rem;
+            text-align: center;
+            min-width: 180px
+        }
+
+        .dial-num {
+            font-size: 4rem;
+            font-weight: 700;
+            color: var(--yellow);
+            line-height: 1;
+            font-family: var(--mono)
+        }
+
+        .dial-label {
+            font-size: .7rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            margin-top: .25rem
+        }
+
+        .dial-sub {
+            font-size: .75rem;
+            color: var(--text);
+            margin-top: .5rem;
+            font-weight: 500
+        }
+
+        .score-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: .85rem
+        }
+
+        .sc {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden
+        }
+
+        .sc::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            border-radius: 10px 10px 0 0
+        }
+
+        .sc-r::before {
+            background: var(--red)
+        }
+
+        .sc-o::before {
+            background: var(--orange)
+        }
+
+        .sc-y::before {
+            background: var(--yellow)
+        }
+
+        .sc-g::before {
+            background: var(--green)
+        }
+
+        .sc-b::before {
+            background: var(--blue)
+        }
+
+        .sc-num {
+            font-size: 2rem;
+            font-weight: 700;
+            line-height: 1;
+            display: block;
+            margin-bottom: .2rem;
+            font-family: var(--mono)
+        }
+
+        .nr {
+            color: var(--red)
+        }
+
+        .no {
+            color: var(--orange)
+        }
+
+        .ny {
+            color: var(--yellow)
+        }
+
+        .ng {
+            color: var(--green)
+        }
+
+        .nb {
+            color: var(--blue)
+        }
+
+        .sc-lbl {
+            font-size: .65rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: .08em
+        }
+
+        /* ── Rule severity table ── */
+        .rule-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: .75rem;
+            font-size: .8rem
+        }
+
+        .rule-table th {
+            text-align: left;
+            padding: .5rem .75rem;
+            font-size: .67rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--muted);
+            border-bottom: 1px solid var(--border)
+        }
+
+        .rule-table td {
+            padding: .6rem .75rem;
+            border-bottom: 1px solid rgba(42, 47, 82, .4)
+        }
+
+        .rule-table tr:last-child td {
+            border-bottom: none
+        }
+
+        .sev-tag {
+            font-family: var(--mono);
+            font-size: .65rem;
+            font-weight: 600;
+            padding: .15rem .5rem;
+            border-radius: 4px
+        }
+
+        .s-c {
+            background: var(--red-bg);
+            color: var(--red);
+            border: 1px solid var(--red-b)
+        }
+
+        .s-s {
+            background: var(--orange-bg);
+            color: var(--orange);
+            border: 1px solid var(--orange-b)
+        }
+
+        .s-m {
+            background: var(--yellow-bg);
+            color: var(--yellow);
+            border: 1px solid var(--yellow-b)
+        }
+
+        .s-n {
+            background: var(--green-bg);
+            color: var(--green);
+            border: 1px solid var(--green-b)
+        }
+
+        .neg {
+            color: var(--red);
+            font-family: var(--mono);
+            font-weight: 600
+        }
+
+        .pos {
+            color: var(--green);
+            font-family: var(--mono);
+            font-weight: 600
+        }
+
+        /* ── Section ── */
+        .sec-hdr {
+            display: flex;
+            align-items: center;
+            gap: .65rem;
+            margin-bottom: 1.1rem;
+            padding-bottom: .65rem;
+            border-bottom: 1px solid var(--border)
+        }
+
+        .sec-ico {
+            width: 30px;
+            height: 30px;
+            border-radius: 7px;
+            display: grid;
+            place-items: center;
+            font-size: .9rem;
+            flex-shrink: 0
+        }
+
+        .ico-b {
+            background: var(--blue-bg)
+        }
+
+        .ico-r {
+            background: var(--red-bg)
+        }
+
+        .ico-g {
+            background: var(--green-bg)
+        }
+
+        .ico-y {
+            background: var(--yellow-bg)
+        }
+
+        .sec-ttl {
+            font-size: 1rem;
+            font-weight: 700
+        }
+
+        .sec-ct {
+            margin-left: auto;
+            font-size: .72rem;
+            color: var(--muted)
+        }
+
+        /* ── WCAG grid ── */
+        .wcag-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem
+        }
+
+        .wcag-col h4 {
+            font-size: .68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            color: var(--muted);
+            margin-bottom: .65rem;
+            padding-bottom: .4rem;
+            border-bottom: 1px solid var(--border)
+        }
+
+        .wcag-pills {
+            display: flex;
+            flex-direction: column;
+            gap: .3rem
+        }
+
+        .wp {
+            display: flex;
+            align-items: center;
+            gap: .4rem;
+            padding: .3rem .5rem;
+            border-radius: 5px;
+            font-size: .75rem;
+            font-family: var(--mono);
+            font-weight: 500
+        }
+
+        .wp-pass {
+            background: var(--green-bg);
+            color: var(--green)
+        }
+
+        .wp-fail {
+            background: var(--red-bg);
+            color: var(--red);
+            border: 1px solid var(--red-b);
+            font-weight: 700
+        }
+
+        .wp-inc {
+            background: rgba(255, 255, 255, .04);
+            color: var(--muted);
+            border: 1px solid var(--border)
+        }
+
+        /* ── Page cards ── */
+        .page-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem
+        }
+
+        .pc {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform .2s, border-color .2s
+        }
+
+        .pc:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent)
+        }
+
+        .pc-top {
+            padding: .85rem 1rem .7rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between
+        }
+
+        .pico {
+            font-size: 1.3rem
+        }
+
+        .pname {
+            font-weight: 700;
+            font-size: .88rem;
+            margin-top: .15rem
+        }
+
+        .purl {
+            font-family: var(--mono);
+            font-size: .6rem;
+            color: var(--muted);
+            margin-top: .1rem
+        }
+
+        .vc {
+            font-family: var(--mono);
+            font-size: .7rem;
+            font-weight: 600;
+            padding: .18rem .55rem;
+            border-radius: 20px;
+            flex-shrink: 0
+        }
+
+        .vc-r {
+            background: var(--red-bg);
+            color: var(--red);
+            border: 1px solid var(--red-b)
+        }
+
+        .vc-g {
+            background: var(--green-bg);
+            color: var(--green);
+            border: 1px solid var(--green-b)
+        }
+
+        .pc-body {
+            padding: .7rem 1rem
+        }
+
+        .mr {
+            display: flex;
+            justify-content: space-between;
+            padding: .28rem 0;
+            border-bottom: 1px solid rgba(42, 47, 82, .5);
+            font-size: .77rem
+        }
+
+        .mr:last-child {
+            border-bottom: none
+        }
+
+        .ml {
+            color: var(--muted)
+        }
+
+        .mn {
+            font-family: var(--mono);
+            font-weight: 600
+        }
+
+        /* ── Top components table ── */
+        .comp-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: .8rem
+        }
+
+        .comp-table th {
+            text-align: left;
+            padding: .5rem .75rem;
+            font-size: .67rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--muted);
+            border-bottom: 1px solid var(--border)
+        }
+
+        .comp-table td {
+            padding: .6rem .75rem;
+            border-bottom: 1px solid rgba(42, 47, 82, .4);
+            font-family: var(--mono);
+            font-size: .72rem
+        }
+
+        .comp-table tr:last-child td {
+            border-bottom: none
+        }
+
+        .comp-table td:first-child {
+            font-family: var(--font);
+            color: var(--muted);
+            width: 30px
+        }
+
+        .comp-table td:last-child {
+            text-align: right;
+            font-weight: 600;
+            color: var(--red)
+        }
+
+        .comp-name {
+            color: var(--accent);
+            max-width: 500px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap
+        }
+
+        /* ── Violations ── */
+        .filters {
+            display: flex;
+            gap: .45rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.1rem
+        }
+
+        .fb {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            padding: .28rem .75rem;
+            border-radius: 20px;
+            font-size: .72rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all .2s
+        }
+
+        .fb:hover {
+            border-color: var(--accent);
+            color: var(--text)
+        }
+
+        .fb.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff
+        }
+
+        .vi {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            margin-bottom: .65rem;
+            overflow: hidden;
+            transition: border-color .2s
+        }
+
+        .vi:hover {
+            border-color: rgba(91, 106, 245, .4)
+        }
+
+        .vh {
+            display: flex;
+            align-items: center;
+            gap: .65rem;
+            padding: .85rem 1rem;
+            cursor: pointer;
+            user-select: none
+        }
+
+        .it {
+            font-family: var(--mono);
+            font-size: .6rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+            padding: .18rem .5rem;
+            border-radius: 4px;
+            flex-shrink: 0
+        }
+
+        .it-c {
+            background: var(--red-bg);
+            color: var(--red);
+            border: 1px solid var(--red-b)
+        }
+
+        .it-s {
+            background: var(--orange-bg);
+            color: var(--orange);
+            border: 1px solid var(--orange-b)
+        }
+
+        .it-m {
+            background: var(--yellow-bg);
+            color: var(--yellow);
+            border: 1px solid var(--yellow-b)
+        }
+
+        .vr {
+            font-family: var(--mono);
+            font-size: .72rem;
+            color: var(--accent)
+        }
+
+        .vd {
+            flex: 1;
+            font-size: .83rem
+        }
+
+        .vpc {
+            font-size: .63rem;
+            background: var(--s2);
+            border: 1px solid var(--border);
+            padding: .13rem .45rem;
+            border-radius: 20px;
+            color: var(--muted);
+            white-space: nowrap
+        }
+
+        .vn {
+            font-family: var(--mono);
+            font-size: .7rem;
+            color: var(--muted);
+            white-space: nowrap
+        }
+
+        .chev {
+            color: var(--muted);
+            transition: transform .2s;
+            flex-shrink: 0
+        }
+
+        .chev.open {
+            transform: rotate(180deg)
+        }
+
+        .vb {
+            display: none;
+            padding: .9rem 1rem;
+            border-top: 1px solid var(--border);
+            background: var(--bg)
+        }
+
+        .vb.open {
+            display: block
+        }
+
+        .wref {
+            display: inline-flex;
+            align-items: center;
+            gap: .3rem;
+            background: var(--blue-bg);
+            border: 1px solid var(--blue-b);
+            color: var(--blue);
+            font-size: .7rem;
+            font-family: var(--mono);
+            padding: .18rem .55rem;
+            border-radius: 4px;
+            margin-bottom: .7rem
+        }
+
+        .fix-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--green);
+            border-radius: 0 7px 7px 0;
+            padding: .85rem 1rem;
+            margin-top: .45rem
+        }
+
+        .fl {
+            font-size: .63rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            color: var(--green);
+            margin-bottom: .35rem
+        }
+
+        .ft {
+            font-size: .8rem;
+            color: var(--muted);
+            margin-bottom: .4rem
+        }
+
+        pre {
+            background: #08090f;
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            padding: .75rem 1rem;
+            margin-top: .5rem;
+            overflow-x: auto;
+            font-family: var(--mono);
+            font-size: .72rem;
+            color: #a8ff78;
+            line-height: 1.65;
+            white-space: pre
+        }
+
+        .dl {
+            display: inline-flex;
+            align-items: center;
+            gap: .28rem;
+            margin-top: .7rem;
+            font-size: .72rem;
+            color: var(--blue);
+            font-family: var(--mono);
+            text-decoration: none
+        }
+
+        .dl:hover {
+            text-decoration: underline
+        }
+
+        /* ── Scan logs table ── */
+        .logs-table {
+            width: 100%;
+            border-collapse: collapse
+        }
+
+        .logs-table th {
+            text-align: left;
+            padding: .5rem .75rem;
+            font-size: .67rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--muted);
+            border-bottom: 1px solid var(--border)
+        }
+
+        .logs-table td {
+            padding: .65rem .75rem;
+            font-size: .8rem;
+            border-bottom: 1px solid rgba(42, 47, 82, .4)
+        }
+
+        .logs-table tr:last-child td {
+            border-bottom: none
+        }
+
+        .s-ok {
+            color: var(--green);
+            font-weight: 600
+        }
+
+        .s-ct {
+            font-family: var(--mono);
+            font-size: .72rem;
+            color: var(--muted)
+        }
+
+        .s-url {
+            font-family: var(--mono);
+            font-size: .72rem;
+            color: var(--blue)
+        }
+
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 1.5rem 2rem;
+            text-align: center;
+            color: var(--muted);
+            font-size: .72rem
+        }
+
+        .fi {
+            max-width: 1080px;
+            margin: 0 auto
+        }
+
+        footer strong {
+            color: var(--text)
+        }
+
+        footer a {
+            color: var(--blue);
+            text-decoration: none
+        }
+
+        footer a:hover {
+            text-decoration: underline
+        }
+
+        @media(max-width:700px) {
+            .score-row {
+                grid-template-columns: 1fr
+            }
+
+            .score-dial {
+                display: none
+            }
+
+            .wcag-grid {
+                grid-template-columns: repeat(2, 1fr)
+            }
+
+            .main {
+                padding: 1rem
+            }
+
+            .vr,
+            .vn {
+                display: none
+            }
+
+            .proof-link-row {
+                flex-direction: column
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Topbar -->
+    <div class="topbar">
+        <div class="tl">
+            <span class="bs">BrowserStack</span>
+            <div>
+                <div class="ttl">Accessibility Testing — Website Scanner</div>
+                <div class="tsub">The Inclusive Engineer · Hackathon Submission · WCAG 2.1 AA</div>
+            </div>
+        </div>
+        <div class="live"><span class="dot"></span>Scan Complete · Feb 21, 2026</div>
+    </div>
+
+    <!-- Hero -->
+    <div class="hero">
+        <div class="hi">
+            <div class="htag">♿ BrowserStack Accessibility Scanner · Spectra v5.16.3</div>
+            <h1>Accessibility Audit Report<br><span class="url">ecommercebs.vercel.app</span></h1>
+            <p class="hdesc">Real-world accessibility audit run via BrowserStack Website Scanner across 4 pages — Home,
+                Login, Products, Cart. 36 confirmed issues found. Scored against WCAG 2.1 AA, Section 508, ADA &amp;
+                EAA.</p>
+            <div class="hmeta">
+                <div class="mc"><span class="l">Auditor</span><span class="v">Boney Gawande</span></div>
+                <div class="mc"><span class="l">Scan ID</span><span class="v">10294880_a11y</span></div>
+                <div class="mc"><span class="l">Standard</span><span class="v">WCAG 2.1 AA · Section 508 · ADA ·
+                        EAA</span></div>
+                <div class="mc"><span class="l">Engine</span><span class="v">Spectra v5.16.3</span></div>
+                <div class="mc"><span class="l">Date</span><span class="v">Feb 21, 2026 · 2:46 PM</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main">
+
+        <!-- ── SUBMISSION PROOF BOX ── -->
+        <div class="proof-box">
+            <div class="proof-title">🏆 Hackathon Submission — Official BrowserStack Report Links</div>
+            <div class="proof-links">
+
+                <div class="proof-link-row">
+                    <span class="proof-label">📊 Main Scan<br><span style="color:var(--red);font-size:.65rem">(36 issues
+                            found)</span></span>
+                    <span
+                        class="proof-url">https://accessibility.browserstack.com/site-scanner/projects/ecommercebs.vercel.app_BoneyGawande_10294880_a11y/builds?thBuildId=8016j0vxihzhpux8zct0jh76zgncwartmao1jpb4</span>
+                    <a class="btn-proof"
+                        href="https://accessibility.browserstack.com/site-scanner/projects/ecommercebs.vercel.app_BoneyGawande_10294880_a11y/builds?thBuildId=8016j0vxihzhpux8zct0jh76zgncwartmao1jpb4&recurring=true&tunnel_vision=false"
+                        target="_blank" rel="noopener">🔗 Open Report →</a>
+                </div>
+
+                <hr class="divider" />
+
+                <div class="proof-link-row">
+                    <span class="proof-label">📋 Multi-page<br><span
+                            style="color:var(--green);font-size:.65rem">(Login/Products/Cart)</span></span>
+                    <span
+                        class="proof-url">https://accessibility.browserstack.com/site-scanner/projects/ecommercebs.vercel.app-2/builds?thBuildId=saoazjbvuadckbhw1odlmzwjvhigch4eaa4vgo99</span>
+                    <a class="btn-secondary"
+                        href="https://accessibility.browserstack.com/site-scanner/projects/ecommercebs.vercel.app-2/builds?thBuildId=saoazjbvuadckbhw1odlmzwjvhigch4eaa4vgo99&recurring=true&tunnel_vision=false&id=ecommercebs.vercel.app-2&tab=SCANLOGS"
+                        target="_blank" rel="noopener">🔗 Open Scan Logs →</a>
+                </div>
+
+                <hr class="divider" />
+
+                <div class="proof-link-row">
+                    <span class="proof-label">📤 Public Share<br><span
+                            style="color:var(--yellow);font-size:.65rem">(shareable token)</span></span>
+                    <span
+                        class="proof-url">https://accessibility.browserstack.com/public_report?type=scanner&amp;token=tok_d3f458b39222f57f5578a3b30ef06bc...</span>
+                    <a class="btn-proof" style="background:var(--accent)"
+                        href="https://accessibility.browserstack.com/public_report?type=scanner&token=tok_d3f458b39222f57f5578a3b30ef06bc594819b66596df3f71359a72fc44a0ac405995f2325889eb22372a98787fa10b25949e943930c50bd95cd536ad84a1527"
+                        target="_blank" rel="noopener">🔗 Public Link →</a>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ── SCORE ── -->
+        <div style="margin-bottom:2rem">
+            <div class="sec-hdr">
+                <div class="sec-ico ico-y">📊</div>
+                <div class="sec-ttl">Accessibility Score &amp; Issue Summary</div>
+                <div class="sec-ct">ecommercebs.vercel.app · Feb 21, 2026 · 2:46 PM</div>
+            </div>
+            <div class="score-row">
+                <div class="score-dial">
+                    <div class="dial-num">78</div>
+                    <div class="dial-label">Accessibility Score</div>
+                    <div class="dial-sub">Out of 100</div>
+                    <div
+                        style="margin-top:1rem;background:rgba(42,47,82,.5);border-radius:20px;height:6px;overflow:hidden">
+                        <div
+                            style="width:78%;height:100%;background:linear-gradient(90deg,var(--yellow),var(--orange));border-radius:20px">
+                        </div>
+                    </div>
+                    <div style="font-size:.68rem;color:var(--muted);margin-top:.5rem">Affected pages: 1 · Components: 17
+                    </div>
+                </div>
+                <div>
+                    <div class="score-cards" style="margin-bottom:.85rem">
+                        <div class="sc sc-r"><span class="sc-num nr">17</span>
+                            <div class="sc-lbl">🔴 Critical</div>
+                        </div>
+                        <div class="sc sc-o"><span class="sc-num no">18</span>
+                            <div class="sc-lbl">🟠 Serious</div>
+                        </div>
+                        <div class="sc sc-y"><span class="sc-num ny">1</span>
+                            <div class="sc-lbl">🟡 Moderate</div>
+                        </div>
+                        <div class="sc sc-g"><span class="sc-num ng">0</span>
+                            <div class="sc-lbl">🟢 Minor</div>
+                        </div>
+                        <div class="sc sc-b"><span class="sc-num nb">36</span>
+                            <div class="sc-lbl">Total Issues</div>
+                        </div>
+                    </div>
+                    <!-- Rule severity breakdown from BrowserStack -->
+                    <div
+                        style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden">
+                        <table class="rule-table">
+                            <thead>
+                                <tr>
+                                    <th>Rule Severity</th>
+                                    <th>Passed Rules</th>
+                                    <th>Failed Rules</th>
+                                    <th>Score Impact</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="sev-tag s-c">Critical</span></td>
+                                    <td>8</td>
+                                    <td>1</td>
+                                    <td class="neg">−11</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="sev-tag s-s">Serious</span></td>
+                                    <td>8</td>
+                                    <td>1</td>
+                                    <td class="neg">−8</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="sev-tag s-m">Moderate</span></td>
+                                    <td>2</td>
+                                    <td>1</td>
+                                    <td class="neg">−3</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="sev-tag s-n">Minor</span></td>
+                                    <td>1</td>
+                                    <td>0</td>
+                                    <td class="pos">0</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── WCAG GRID ── -->
+        <div style="margin-bottom:2rem">
+            <div class="sec-hdr">
+                <div class="sec-ico ico-b">📋</div>
+                <div class="sec-ttl">WCAG 2.1 AA Success Criteria</div>
+                <div class="sec-ct">Real BrowserStack scan results</div>
+            </div>
+            <div class="wcag-grid">
+                <div>
+                    <h4>1. Perceivable</h4>
+                    <div class="wcag-pills">
+                        <div class="wp wp-pass">✅ 1.1.1</div>
+                        <div class="wp wp-pass">✅ 1.2.2</div>
+                        <div class="wp wp-pass">✅ 1.3.1</div>
+                        <div class="wp wp-pass">✅ 1.3.4</div>
+                        <div class="wp wp-pass">✅ 1.4.10</div>
+                        <div class="wp wp-pass">✅ 1.4.12</div>
+                        <div class="wp wp-pass">✅ 1.4.4</div>
+                        <div class="wp wp-pass">✅ 1.2.3</div>
+                        <div class="wp wp-pass">✅ 1.3.2</div>
+                        <div class="wp wp-pass">✅ 1.4.1</div>
+                        <div class="wp wp-pass">✅ 1.4.11</div>
+                        <div class="wp wp-pass">✅ 1.4.2</div>
+                        <div class="wp wp-pass">✅ 1.4.5</div>
+                    </div>
+                </div>
+                <div>
+                    <h4>2. Operable</h4>
+                    <div class="wcag-pills">
+                        <div class="wp wp-pass">✅ 2.1.1</div>
+                        <div class="wp wp-pass">✅ 2.2.2</div>
+                        <div class="wp wp-pass">✅ 2.4.2</div>
+                        <div class="wp wp-pass">✅ 2.4.6</div>
+                        <div class="wp wp-pass">✅ 2.5.1</div>
+                        <div class="wp wp-pass">✅ 2.2.1</div>
+                        <div class="wp wp-pass">✅ 2.4.1</div>
+                        <div class="wp wp-pass">✅ 2.4.4</div>
+                        <div class="wp wp-pass">✅ 2.4.7</div>
+                        <div class="wp wp-pass">✅ 2.5.3</div>
+                        <div class="wp wp-inc">○ 2.1.4</div>
+                        <div class="wp wp-inc">≈ 2.4.3</div>
+                        <div class="wp wp-inc">○ 2.3.1</div>
+                    </div>
+                </div>
+                <div>
+                    <h4>3. Understandable</h4>
+                    <div class="wcag-pills">
+                        <div class="wp wp-pass">✅ 3.1.1</div>
+                        <div class="wp wp-pass">✅ 3.2.3</div>
+                        <div class="wp wp-pass">✅ 3.3.1</div>
+                        <div class="wp wp-pass">✅ 3.3.2</div>
+                        <div class="wp wp-pass">✅ 3.2.4</div>
+                        <div class="wp wp-inc">≈ 3.2.1</div>
+                        <div class="wp wp-inc">≈ 3.3.4</div>
+                        <div class="wp wp-inc">○ 3.2.2</div>
+                    </div>
+                </div>
+                <div>
+                    <h4>4. Robust</h4>
+                    <div class="wcag-pills">
+                        <div class="wp wp-pass">✅ 4.1.1</div>
+                        <div class="wp wp-fail">❌ 4.1.2 — FAILED</div>
+                        <div class="wp wp-inc">○ 4.1.3</div>
+                    </div>
+                    <div
+                        style="margin-top:.85rem;background:var(--red-bg);border:1px solid var(--red-b);border-radius:7px;padding:.75rem">
+                        <div
+                            style="font-size:.65rem;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.25rem">
+                            ⚠️ Primary Failure</div>
+                        <div style="font-size:.78rem;color:var(--text);font-weight:600">WCAG 4.1.2 — Name, Role, Value
+                        </div>
+                        <div style="font-size:.72rem;color:var(--muted);margin-top:.15rem">17 button components lack
+                            accessible names across the home page.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── PAGE RESULTS ── -->
+        <div style="margin-bottom:2rem">
+            <div class="sec-hdr">
+                <div class="sec-ico ico-b">📄</div>
+                <div class="sec-ttl">Page-by-Page Scan Results</div>
+                <div class="sec-ct">1 affected page · 3 pages clean</div>
+            </div>
+            <div class="page-grid">
+                <div class="pc">
+                    <div class="pc-top">
+                        <div>
+                            <div class="pico">🏠</div>
+                            <div class="pname">Home Page</div>
+                            <div class="purl">ecommercebs.vercel.app/</div>
+                        </div><span class="vc vc-r">36 issues</span>
+                    </div>
+                    <div class="pc-body">
+                        <div class="mr"><span class="ml">Score</span><span class="mn" style="color:var(--yellow)">78 /
+                                100</span></div>
+                        <div class="mr"><span class="ml">🔴 Critical</span><span class="mn"
+                                style="color:var(--red)">17</span></div>
+                        <div class="mr"><span class="ml">🟠 Serious</span><span class="mn"
+                                style="color:var(--orange)">18</span></div>
+                        <div class="mr"><span class="ml">🟡 Moderate</span><span class="mn"
+                                style="color:var(--yellow)">1</span></div>
+                        <div class="mr"><span class="ml">Components hit</span><span class="mn">17</span></div>
+                    </div>
+                </div>
+                <div class="pc">
+                    <div class="pc-top">
+                        <div>
+                            <div class="pico">🔐</div>
+                            <div class="pname">Login Page</div>
+                            <div class="purl">ecommercebs.vercel.app/login</div>
+                        </div><span class="vc vc-g">0 issues</span>
+                    </div>
+                    <div class="pc-body">
+                        <div class="mr"><span class="ml">Status</span><span class="mn" style="color:var(--green)">✅ Scan
+                                complete</span></div>
+                        <div class="mr"><span class="ml">Date</span><span class="mn">Feb 21 · 2:51 PM</span></div>
+                        <div class="mr"><span class="ml">Result</span><span class="mn" style="color:var(--green)">0
+                                issues found</span></div>
+                    </div>
+                </div>
+                <div class="pc">
+                    <div class="pc-top">
+                        <div>
+                            <div class="pico">🛍️</div>
+                            <div class="pname">Product Listing</div>
+                            <div class="purl">ecommercebs.vercel.app/products</div>
+                        </div><span class="vc vc-g">0 issues</span>
+                    </div>
+                    <div class="pc-body">
+                        <div class="mr"><span class="ml">Status</span><span class="mn" style="color:var(--green)">✅ Scan
+                                complete</span></div>
+                        <div class="mr"><span class="ml">Date</span><span class="mn">Feb 21 · 2:51 PM</span></div>
+                        <div class="mr"><span class="ml">Result</span><span class="mn" style="color:var(--green)">0
+                                issues found</span></div>
+                    </div>
+                </div>
+                <div class="pc">
+                    <div class="pc-top">
+                        <div>
+                            <div class="pico">🛒</div>
+                            <div class="pname">Cart Page</div>
+                            <div class="purl">ecommercebs.vercel.app/cart</div>
+                        </div><span class="vc vc-g">0 issues</span>
+                    </div>
+                    <div class="pc-body">
+                        <div class="mr"><span class="ml">Status</span><span class="mn" style="color:var(--green)">✅ Scan
+                                complete</span></div>
+                        <div class="mr"><span class="ml">Date</span><span class="mn">Feb 21 · 2:51 PM</span></div>
+                        <div class="mr"><span class="ml">Result</span><span class="mn" style="color:var(--green)">0
+                                issues found</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── TOP AFFECTED COMPONENTS ── -->
+        <div style="margin-bottom:2rem">
+            <div class="sec-hdr">
+                <div class="sec-ico ico-r">🔧</div>
+                <div class="sec-ttl">Top Affected Components</div>
+                <div class="sec-ct">17 components · real BrowserStack data</div>
+            </div>
+            <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden">
+                <table class="comp-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Component</th>
+                            <th style="text-align:right">Issues</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td class="comp-name">
+                                button.inline-flex.items-center.justify-center.whitespace-nowrap.text-sm.font-medium.disabled:pointer-events-none.disabled:opacity-50.[&amp;_svg]...
+                            </td>
+                            <td>7</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td class="comp-name">span</td>
+                            <td>5</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td class="comp-name">
+                                button.inline-flex.items-center.justify-center.whitespace-nowrap.font-medium.transition-all.disabled:pointer-events-none.disabled:opacity-50.[&amp;...
+                            </td>
+                            <td>4</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td class="comp-name">span.text-sm.text-white/80</td>
+                            <td>2</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td class="comp-name">span.text-sm.text-white.ml-1.font-medium</td>
+                            <td>2</td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td class="comp-name">span.font-bold.text-white.text-xl</td>
+                            <td>2</td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td class="comp-name">button.h-3.rounded-full.transition-all.duration-300.bg-[...]</td>
+                            <td>2</td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td class="comp-name">
+                                button.peer.data-[state=checked]:bg-primary.data-[state=unchecked]:bg-switch-background.focus-visible:border-ring...
+                            </td>
+                            <td>1</td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td class="comp-name">
+                                input.file:text-foreground.selection:bg-primary.selection:text-primary-foreground.dark:bg-input/30...
+                            </td>
+                            <td>1</td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td class="comp-name">p.text-[...] (×2 instances)</td>
+                            <td>2</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ── VIOLATIONS ── -->
+        <div style="margin-bottom:2rem">
+            <div class="sec-hdr">
+                <div class="sec-ico ico-r">⚠️</div>
+                <div class="sec-ttl">Confirmed Issues with Fix Recommendations</div>
+                <div class="sec-ct">24 confirmed · 12 need review · click to expand</div>
+            </div>
+            <div class="filters">
+                <button class="fb active" onclick="fv('all',this)">All (3 types)</button>
+                <button class="fb" onclick="fv('critical',this)">🔴 Critical (17)</button>
+                <button class="fb" onclick="fv('serious',this)">🟠 Serious (18)</button>
+                <button class="fb" onclick="fv('moderate',this)">🟡 Moderate (1)</button>
+            </div>
+            <div id="vlist"></div>
+        </div>
+
+        <!-- ── SCAN LOGS ── -->
+        <div style="margin-bottom:2rem">
+            <div class="sec-hdr">
+                <div class="sec-ico ico-g">📋</div>
+                <div class="sec-ttl">Scan Logs</div>
+                <div class="sec-ct">3 success · 0 failures · 0 redirects</div>
+            </div>
+            <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden">
+                <table class="logs-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Page URL</th>
+                            <th>Status</th>
+                            <th>Result</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="s-ct">Feb 21st, 2:51 PM</td>
+                            <td class="s-url">https://ecommercebs.vercel.app/login</td>
+                            <td><span class="s-ok">✅ Success</span></td>
+                            <td style="color:var(--muted);font-size:.77rem">Scan complete, 0 issues found</td>
+                        </tr>
+                        <tr>
+                            <td class="s-ct">Feb 21st, 2:51 PM</td>
+                            <td class="s-url">https://ecommercebs.vercel.app/products</td>
+                            <td><span class="s-ok">✅ Success</span></td>
+                            <td style="color:var(--muted);font-size:.77rem">Scan complete, 0 issues found</td>
+                        </tr>
+                        <tr>
+                            <td class="s-ct">Feb 21st, 2:51 PM</td>
+                            <td class="s-url">https://ecommercebs.vercel.app/cart</td>
+                            <td><span class="s-ok">✅ Success</span></td>
+                            <td style="color:var(--muted);font-size:.77rem">Scan complete, 0 issues found</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Assisted tests -->
+            <div
+                style="margin-top:1rem;background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden">
+                <div style="padding:.75rem 1rem;border-bottom:1px solid var(--border);font-weight:600;font-size:.85rem">
+                    Assisted Tests — Manual Review Required</div>
+                <table class="logs-table">
+                    <thead>
+                        <tr>
+                            <th>Test Area</th>
+                            <th>WCAG Success Criteria</th>
+                            <th>Potential Additional Issues</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Keyboard Navigation</td>
+                            <td style="font-family:var(--mono);font-size:.72rem;color:var(--blue)">SC 2.1.1 (+2)</td>
+                            <td style="color:var(--muted);font-size:.77rem">All interactive elements must be reachable
+                                via keyboard</td>
+                        </tr>
+                        <tr>
+                            <td>Interactive Elements</td>
+                            <td style="font-family:var(--mono);font-size:.72rem;color:var(--blue)">SC 4.1.2</td>
+                            <td style="color:var(--muted);font-size:.77rem">Custom widgets must expose name, role, and
+                                value</td>
+                        </tr>
+                        <tr>
+                            <td>Modals</td>
+                            <td style="font-family:var(--mono);font-size:.72rem;color:var(--blue)">SC 2.4.3 (+4)</td>
+                            <td style="color:var(--muted);font-size:.77rem">Focus must be trapped inside modals and
+                                returned on close</td>
+                        </tr>
+                        <tr>
+                            <td>Layout</td>
+                            <td style="font-family:var(--mono);font-size:.72rem;color:var(--blue)">SC 1.3.1 (+4)</td>
+                            <td style="color:var(--muted);font-size:.77rem">Reading order must match visual order</td>
+                        </tr>
+                        <tr>
+                            <td>Forms</td>
+                            <td style="font-family:var(--mono);font-size:.72rem;color:var(--blue)">SC 3.3.2 (+4)</td>
+                            <td style="color:var(--muted);font-size:.77rem">Error messages must be programmatically
+                                associated with inputs</td>
+                        </tr>
+                        <tr>
+                            <td>Images</td>
+                            <td style="font-family:var(--mono);font-size:.72rem;color:var(--blue)">SC 1.1.1 (+1)</td>
+                            <td style="color:var(--muted);font-size:.77rem">Complex images may need extended text
+                                descriptions</td>
+                        </tr>
+                        <tr>
+                            <td>Responsiveness</td>
+                            <td style="font-family:var(--mono);font-size:.72rem;color:var(--blue)">SC 1.4.10 (+2)</td>
+                            <td style="color:var(--muted);font-size:.77rem">Content must reflow at 320px without
+                                horizontal scrolling</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <div class="fi">
+            Scanned via <strong>BrowserStack Accessibility Testing</strong> · Website Scanner · Spectra v5.16.3<br>
+            Standard: <strong>WCAG 2.1 AA · Section 508 · ADA · EAA</strong> · Auditor: <strong>Boney
+                Gawande</strong><br><br>
+            Scan 1 (issues):
+            <a href="https://accessibility.browserstack.com/site-scanner/projects/ecommercebs.vercel.app_BoneyGawande_10294880_a11y/builds?thBuildId=8016j0vxihzhpux8zct0jh76zgncwartmao1jpb4&recurring=true&tunnel_vision=false"
+                target="_blank" rel="noopener">ecommercebs.vercel.app_BoneyGawande_10294880_a11y</a> ·
+            Scan 2 (logs):
+            <a href="https://accessibility.browserstack.com/site-scanner/projects/ecommercebs.vercel.app-2/builds?thBuildId=saoazjbvuadckbhw1odlmzwjvhigch4eaa4vgo99&recurring=true&tunnel_vision=false"
+                target="_blank" rel="noopener">ecommercebs.vercel.app-2</a><br>
+            Public token: <a
+                href="https://accessibility.browserstack.com/public_report?type=scanner&token=tok_d3f458b39222f57f5578a3b30ef06bc594819b66596df3f71359a72fc44a0ac405995f2325889eb22372a98787fa10b25949e943930c50bd95cd536ad84a1527"
+                target="_blank" rel="noopener">tok_d3f458b3...</a><br><br>
+            <strong>The Inclusive Engineer</strong> — Hackathon Submission · Feb 21, 2026
+        </div>
+    </footer>
+
+    <script>
+        const V = [
+            {
+                impact: 'critical', rule: 'button-accessible-name', count: 17,
+                desc: '17 button components have no accessible name — screen readers cannot identify their purpose',
+                wcag: 'WCAG 4.1.2 Name, Role, Value (Level A)',
+                fix: 'Add aria-label to every icon-only button, or include visible text. This is the primary failure causing WCAG 4.1.2 to fail.',
+                code: `&lt;!-- ❌ Fails — icon-only, no accessible name --&gt;
+&lt;button class="inline-flex items-center justify-center..."&gt;
+  &lt;svg&gt;&amp;...svg_icon&lt;/svg&gt;
+&lt;/button&gt;
+
+&lt;!-- ✅ Fix 1: aria-label on button --&gt;
+&lt;button
+  class="inline-flex items-center justify-center..."
+  aria-label="Add item to cart"
+&gt;
+  &lt;svg aria-hidden="true"&gt;&amp;...svg_icon&lt;/svg&gt;
+&lt;/button&gt;
+
+&lt;!-- ✅ Fix 2: visually hidden text --&gt;
+&lt;button class="inline-flex items-center..."&gt;
+  &lt;svg aria-hidden="true"&gt;&amp;...&lt;/svg&gt;
+  &lt;span class="sr-only"&gt;Add to cart&lt;/span&gt;
+&lt;/button&gt;
+
+/* Tailwind sr-only utility */
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0,0,0,0); white-space: nowrap; border-width: 0;
+}`,
+                doc: 'https://dequeuniversity.com/rules/axe/4.9/button-name'
+            },
+            {
+                impact: 'serious', rule: 'color-contrast', count: 6,
+                desc: '6 elements fail minimum color contrast — span and button text on colored backgrounds is unreadable for low-vision users',
+                wcag: 'WCAG 1.4.3 Contrast Minimum (Level AA) — requires 4.5:1 ratio',
+                fix: 'Darken text or lighten background to achieve at least 4.5:1 contrast ratio. Affects span elements and disabled button states.',
+                code: `/* ❌ Fails — white text on light background */
+.text-white\\/80 { color: rgba(255,255,255,0.8); }
+/* On light bg: ratio ~2.1:1 — FAILS */
+
+/* ✅ Fix — ensure sufficient contrast */
+/* Option A: darken background */
+.card-bg { background: #1a1a2e; } /* darker bg */
+
+/* Option B: opaque text color */
+.text-white\\/80 { color: #e0e0e0; } /* still visible but contrast-safe */
+
+/* ✅ For button disabled states */
+.btn:disabled {
+  /* Instead of opacity-50, set explicit accessible colors */
+  color: #767676;
+  background: #e0e0e0;
+}
+
+/* Check contrast with WebAIM: https://webaim.org/resources/contrastchecker */`,
+                doc: 'https://dequeuniversity.com/rules/axe/4.9/color-contrast'
+            },
+            {
+                impact: 'moderate', rule: 'autocomplete-valid', count: 1,
+                desc: '1 input field has an invalid autocomplete attribute value — prevents browsers and assistive tech from auto-filling correctly',
+                wcag: 'WCAG 1.3.5 Identify Input Purpose (Level AA)',
+                fix: 'Use a valid HTML autocomplete token on the input. BrowserStack identified the file-input component.',
+                code: `&lt;!-- ❌ Invalid — custom class used as autocomplete value --&gt;
+&lt;input
+  class="file:text-foreground selection:bg-primary..."
+  type="text"
+  autocomplete="something-invalid"
+/&gt;
+
+&lt;!-- ✅ Valid autocomplete tokens --&gt;
+&lt;input type="email"    autocomplete="email" /&gt;
+&lt;input type="password" autocomplete="current-password" /&gt;
+&lt;input type="text"     name="name"    autocomplete="name" /&gt;
+&lt;input type="tel"      autocomplete="tel" /&gt;
+&lt;input type="search"   autocomplete="off" /&gt;
+&lt;input type="file"     autocomplete="off" /&gt;
+
+&lt;!-- Full list: https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete --&gt;`,
+                doc: 'https://dequeuniversity.com/rules/axe/4.9/autocomplete-valid'
+            }
+        ];
+
+        function renderV(filter) {
+            const l = document.getElementById('vlist'); l.innerHTML = '';
+            const data = filter === 'all' ? V : V.filter(v => v.impact === filter);
+            if (!data.length) { l.innerHTML = '<div style="padding:1.5rem;text-align:center;color:var(--muted)">No violations in this category</div>'; return; }
+            data.forEach(v => {
+                const el = document.createElement('div'); el.className = 'vi'; el.dataset.impact = v.impact;
+                el.innerHTML = `<div class="vh" onclick="tv(this)">
+      <span class="it it-${v.impact[0]}">${v.impact}</span>
+      <span class="vr">${v.rule}</span>
+      <span class="vd">${v.desc}</span>
+      <span class="vn">${v.count} instance${v.count !== 1 ? 's' : ''}</span>
+      <span class="chev">▾</span>
+    </div>
+    <div class="vb">
+      <span class="wref">📋 ${v.wcag}</span>
+      <div class="fix-box">
+        <div class="fl">✅ How to Fix</div>
+        <div class="ft">${v.fix}</div>
+        <pre>${v.code}</pre>
+      </div>
+      <a class="dl" href="${v.doc}" target="_blank" rel="noopener">📖 Full WCAG documentation →</a>
+    </div>`;
+                l.appendChild(el);
+            });
+        }
+        function tv(h) { const b = h.nextElementSibling, c = h.querySelector('.chev'); b.classList.toggle('open'); c.classList.toggle('open'); }
+        function fv(f, btn) { document.querySelectorAll('.fb').forEach(b => b.classList.remove('active')); btn.classList.add('active'); renderV(f); }
+        renderV('all');
+    </script>
+</body>
+
+</html>
